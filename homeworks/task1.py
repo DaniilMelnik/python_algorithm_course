@@ -9,8 +9,9 @@ import cProfile
 def test_series(func):
     lst = [1, 0.5, 0.75, 0.625, 0.6875, 0.65625, 0.671875, 0.6640625, 0.66796875]
     for i, el in enumerate(lst):
-        assert el == func(i)
         print(f'{func(i)} OK')
+        assert el == func(i)
+
 
 
 def sum_of_series(n):
@@ -35,9 +36,15 @@ def sum_of_series_rec(n):
         return 0.5
     return sum_of_series_rec(n - 1) + (sum_of_series_rec(n - 2) - sum_of_series_rec(n - 1)) / 2
 
+def sum_from_gp(n):
+    n_1 = 1
+    step = -0.5
+    n_sum = n_1 * (1 - step ** n) / (1 - step)
+    return n_sum
 
-# test_series(sum_of_series)
 
+test_series(sum_from_gp)
+# print(sum_from_gp(6))
 
 # def sum_of_series(n):
 # Изначальная версия функции

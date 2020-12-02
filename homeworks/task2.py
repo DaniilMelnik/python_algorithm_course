@@ -36,7 +36,7 @@ def sieve_prime(n):
         prime_n = 0
 
 def sieve_optimized(n):
-    size = 100
+    size = 1000000
     sieve = [i for i in range(size)]
     sieve[1] = 0
     prime_n = 0
