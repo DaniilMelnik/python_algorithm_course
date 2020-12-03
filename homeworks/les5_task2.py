@@ -31,31 +31,28 @@ if operation == "*":
         remainder = 0
         jkey = 0
         for j in reversed(second_hex):
-            d[jkey + iKey] += (remainder + (i * j)) % 16
-            remainder = (i * j) // 16
+            in_cell = d[jkey + iKey]
+            d[jkey + iKey] = (in_cell + remainder + (i * j)) % 16
+            remainder = (in_cell + (i * j)) // 16
             jkey += 1
         while remainder > 0:
             d[jkey + iKey] += remainder
             remainder //= 16
             jkey += 1
-    hex_keys = {val: key for key, val in hex_keys.items()}
-    result = list([hex_keys.get(val, val) for key, val in d.items()])
-    result.reverse()
-    print(result)
-
+        iKey += 1
 elif "+" == operation:
-    result = OrderedDict()
+    d = OrderedDict()
     remainder = 0
     for key, el in enumerate(zip_longest(reversed(first_hex), reversed(second_hex), fillvalue=0)):
         tmp = sum(el)
-        result[key] = (tmp + remainder) % 16
+        d[key] = (tmp + remainder) % 16
         remainder = tmp // 16
     while remainder > 0:
-        result["last"] = remainder
+        d["last"] = remainder
         remainder //= 16
 
-    hex_keys = {val: key for key, val in hex_keys.items()}
-    result = list([hex_keys.get(val, val) for key, val in result.items()])
-    result.reverse()
-    print(result)
+hex_keys = {val: key for key, val in hex_keys.items()}
+result = list([hex_keys.get(val, val) for key, val in d.items()])
+result.reverse()
+print(result)
 
