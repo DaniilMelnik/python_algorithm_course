@@ -12,4 +12,5 @@ n_grips = 0
 for el in graph:
     n_grips += sum(el)
 
+n_grips = n_grips // 2
 print("Количество рукопожатий: ", n_grips)
