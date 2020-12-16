@@ -6,7 +6,9 @@ a. граф должен храниться в виде списка смежн�
 b. генерация графа выполняется в отдельной функции, которая принимает на вход число вершин.
 """
 import random
+from collections import deque
 
+# тестовый граф из примера, для контроля
 test_graph = [
     [1, 3, 4],
     [2, 5],
@@ -17,17 +19,37 @@ test_graph = [
     [5],
     [6],
 ]
-#TODO все вершины должны быть связаны
+
+
 def generate_graph(n_vertex):
     graph = []
-    for v in range(n_vertex):
+
+    for index, v in enumerate(range(n_vertex)):
         bounds = []
-        for el in range(random.randint(1, n_vertex)):
-            bound = v
-            while bound == v:  # т.к граф без петель
-                bound = random.randint(0, n_vertex - 1)
+        length = random.randint(1, n_vertex - 1)
+        while length > 0:
+            bound = random.randint(0, n_vertex - 1)
+            if bound == v or bound in bounds:  # граф без петель и связи не дублируются
+                continue
             bounds.append(bound)
+            length -= 1
         graph.append(bounds)
+
+    # считаем ориентированный граф связным от точки 0 (как в примере), проверяем на связность
+    is_visited = [False for _ in range(n_vertex)]
+    is_visited[0] = True
+    while not all(is_visited):
+        deq = deque([0])
+        while len(deq) > 0:
+            current = deq.pop()
+            for i, vertex in enumerate(graph[current]):
+                if not is_visited[vertex]:
+                    is_visited[vertex] = True
+                    deq.appendleft(vertex)
+        for index, vertex in enumerate(is_visited):  # если граф не связный, привязываем его к точке 0
+            if not vertex:
+                graph[0].append(index)
+                break
     return graph
 
 
@@ -45,25 +67,13 @@ def depth_first_search(graph, visited=None, start=0):
 
     return visited
 
-print(generate_graph(4))
 
-print(depth_first_search(test_graph))
-
-# def depth_first_search_iterative(graph):
-#     length = len(graph)
-#     is_visited = [False] * length
-#     is_visited[0] = True
-#
-#     way = []
-#     start = 0
-#     way.append(start)
-#     while len(way) > 0:
-#         for i, vertex in graph[way[start]]:
-#             if vertex and not is_visited[i]:
-#                 is_visited[i] = True
-#                 way.append(vertex)
-#
-#     return visited
+if __name__ == '__main__':
+    n = 6
+    g = generate_graph(n)
+    print("случайный граф: ", g, sep='\n')
+    print(depth_first_search(g))
+    print("тестовый граф: ", depth_first_search(test_graph), sep='\n')
 
 
 
