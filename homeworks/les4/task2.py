@@ -15,7 +15,6 @@ def test_simple(func):
         assert el == func(i)
 
 
-
 def sieve_prime(n):
     size = 100
     sieve = [i for i in range(size)]
